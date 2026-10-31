@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Admin</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    input { padding: 10px; margin: 5px 0; width: 240px; }
+    button { padding: 10px 25px; background: #1a4d8f; color: white; border: none; border-radius: 5px; }
+  </style>
+</head>
+<body>
+  <h1>Admin: Add a Grade</h1>
+
+  <div class="card">
+    <input type="email" id="studentEmail" placeholder="Student email"><br>
+    <input type="text" id="course" placeholder="Course name"><br>
+    <input type="text" id="grade" placeholder="Grade (e.g. A)"><br>
+    <button id="addBtn">Add Grade</button>
+    <p id="status"></p>
+  </div>
+
+  <script type="module">
+    import { db } from "./firebase.js";
+    import { doc, setDoc, arrayUnion } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+    var adminPass = prompt("Enter admin password:");
+    if (adminPass !== "admin123") {
+      document.body.innerHTML = "<h1>Access denied</h1>";
+    } else {
+      document.getElementById("addBtn").addEventListener("click", function() {
+        var email = document.getElementById("studentEmail").value.trim().toLowerCase();
+        var course = document.getElementById("course").value.trim();
+        var grade = document.getElementById("grade").value.trim();
+        var status = document.getElementById("status");
+
+        if (!email || !course || !grade) {
+          status.textContent = "Please fill in all three boxes.";
+          status.style.color = "red";
+          return;
+        }
+
+        setDoc(doc(db, "students", email), {
+          results: arrayUnion({ course: course, grade: grade })
+        }, { merge: true })
+          .then(function() {
+            status.textContent = "Grade saved for " + email;
+            status.style.color = "green";
+            document.getElementById("course").value = "";
+            document.getElementById("grade").value = "";
+          })
+          .catch(function(error) {
+            status.textContent = "Error: " + error.code;
+            status.style.color = "red";
+          });
+      });
+    }
+  </script>
+</body>
+</html>

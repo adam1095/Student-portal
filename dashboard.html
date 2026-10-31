@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="nav">
+    <a href="dashboard.html">Results</a>
+    <a href="announcements.html">Announcements</a>
+    <a href="profile.html">Profile</a>
+    <a href="index.html">Logout</a>
+  </div>
+
+  <h1 id="welcome">Welcome</h1>
+  <h3>My Results</h3>
+  <table id="results">
+    <tr><th>Course</th><th>Grade</th></tr>
+  </table>
+
+  <script src="data.js"></script>
+  <script>
+    var id = getLoggedIn();
+    if (!id) {
+      window.location.href = "index.html";
+    } else {
+      var student = getStudents()[id];
+      document.getElementById("welcome").textContent = "Welcome, " + student.name;
+      var table = document.getElementById("results");
+      for (var i = 0; i < student.results.length; i++) {
+        var row = table.insertRow();
+        row.insertCell().textContent = student.results[i][0];
+        row.insertCell().textContent = student.results[i][1];
+      }
+    }
+  </script>
+</body>
+</html>

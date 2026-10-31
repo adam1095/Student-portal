@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Firebase Test</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body style="text-align:center; padding-top:50px;">
+  <h1>Firebase Login Test</h1>
+  <form id="loginForm">
+    <input type="email" id="email" placeholder="Email" style="padding:10px;width:220px;"><br><br>
+    <input type="password" id="pass" placeholder="Password" style="padding:10px;width:220px;"><br><br>
+    <button type="submit" style="padding:10px 30px;">Login</button>
+  </form>
+  <p id="message"></p>
+
+  <script type="module">
+    import { auth } from "./firebase.js";
+    import { signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+    document.getElementById("loginForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      var email = document.getElementById("email").value;
+      var pass = document.getElementById("pass").value;
+      var msg = document.getElementById("message");
+
+      signInWithEmailAndPassword(auth, email, pass)
+        .then(function() {
+          msg.textContent = "Firebase login works!";
+          msg.style.color = "green";
+        })
+        .catch(function(error) {
+          msg.textContent = "Error: " + error.code;
+          msg.style.color = "red";
+        });
+    });
+  </script>
+</body>
+</html>

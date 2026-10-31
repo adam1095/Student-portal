@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Announcements</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="nav">
+    <a href="dashboard.html">Results</a>
+    <a href="announcements.html">Announcements</a>
+    <a href="profile.html">Profile</a>
+    <a href="index.html">Logout</a>
+  </div>
+
+  <h1>Announcements</h1>
+  <div id="list"></div>
+
+  <script src="data.js"></script>
+  <script>
+    if (!getLoggedIn()) {
+      window.location.href = "index.html";
+    } else {
+      var box = document.getElementById("list");
+      for (var i = 0; i < announcements.length; i++) {
+        var div = document.createElement("div");
+        div.className = "card";
+        div.textContent = announcements[i][0] + ": " + announcements[i][1];
+        box.appendChild(div);
+      }
+    }
+  </script>
+</body>
+</html>
